@@ -48,7 +48,7 @@ build_busybox() {
 }
 
 init_rootfs() {
-    mkdir -p ./rootfs/{dev,sys,proc,tmp,mnt,vfs}
+    mkdir -p ./rootfs/{dev,sys,proc,lib,tmp,mnt,root,vfs}
 }
 
 build_initrd() {
@@ -66,9 +66,8 @@ make_boot_image() {
     sudo mount -o loop run/vda.ext4 /mnt/
     cd rootfs
     sudo cp -Pvr ./* /mnt/
+    cd -
     sudo cp -vf ./run/Image /mnt
     sudo umount /mnt
-    
-    cd -
 }
 
