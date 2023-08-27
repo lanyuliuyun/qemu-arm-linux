@@ -3,6 +3,12 @@
 export ARCH=arm64
 export CROSS_COMPILE=/opt/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
 
+download_packs() {
+    wget -c https://mirrors.163.com/kernel/v4.x/linux-4.9.37.tar.gz && tar zxf linux-4.9.37.tar.gz
+    wget -c https://github.com/u-boot/u-boot/archive/refs/tags/v2023.04.tar.gz -o u-bootv-2023.04.tar.gz && tar zxf u-bootv-2023.04.tar.gz
+    wget -c https://www.busybox.net/downloads/busybox-1.25.1.tar.bz2 && tar jxf busybox-1.25.1.tar.bz2
+}
+
 build_linux() {
   echo "build_linux ..."
   cd linux-4.9.37
@@ -71,3 +77,10 @@ make_boot_image() {
     sudo umount /mnt
 }
 
+#download_packs
+build_linux
+build_uboot
+build_busybox
+init_rootfs
+build_initrd
+make_boot_image
