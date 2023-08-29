@@ -4,9 +4,26 @@ export ARCH=arm64
 export CROSS_COMPILE=/opt/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
 
 download_packs() {
-    wget -c https://mirrors.163.com/kernel/v4.x/linux-4.9.37.tar.gz && tar zxf linux-4.9.37.tar.gz
-    wget -c https://github.com/u-boot/u-boot/archive/refs/tags/v2023.04.tar.gz -o u-bootv-2023.04.tar.gz && tar zxf u-bootv-2023.04.tar.gz
-    wget -c https://www.busybox.net/downloads/busybox-1.25.1.tar.bz2 && tar jxf busybox-1.25.1.tar.bz2
+    if [ ! -f linux-4.9.37.tar.gz ]; then
+        wget -c https://mirrors.163.com/kernel/v4.x/linux-4.9.37.tar.gz
+    fi
+    if [ ! -d linux-4.9.37 ]; then
+        tar zxf linux-4.9.37.tar.gz
+    fi
+
+    if [ ! -f u-boot-2023.04.tar.gz ]; then
+        wget -c https://github.com/u-boot/u-boot/archive/refs/tags/v2023.04.tar.gz -O u-boot-2023.04.tar.gz
+    fi
+    if [ ! -d u-boot-2023.04 ]; then
+        tar zxf u-boot-2023.04.tar.gz
+    fi
+
+    if [ ! -f busybox-1.25.1.tar.bz2 ]; then
+        wget -c https://www.busybox.net/downloads/busybox-1.25.1.tar.bz2
+    fi
+    if [ ! -d busybox-1.25.1 ]; then
+        tar jxf busybox-1.25.1.tar.bz2
+    fi
 }
 
 build_linux() {
@@ -77,7 +94,7 @@ make_boot_image() {
     sudo umount /mnt
 }
 
-#download_packs
+download_packs
 build_linux
 build_uboot
 build_busybox
