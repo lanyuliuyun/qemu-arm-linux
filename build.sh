@@ -50,6 +50,7 @@ build_uboot() {
     cd u-boot-2023.04
     #make qemu_arm64_defconfig
     cp -vf ../run/ubooot.config  .config
+    make olddefconfig
     make -j4 CROSS_COMPILE=${CROSS_COMPILE} > /dev/null
     # apt-get install ipxe-qemu
     cp -vf u-boot-nodtb.bin ../run/
