@@ -84,6 +84,7 @@ build_initrd() {
 }
 
 make_boot_image() {
+    dd if=/dev/zero of=run/flash.img bs=1MiB count=64
     dd if=/dev/zero of=./run/vda.ext4 bs=1MiB count=128
     mkfs.ext4 run/vda.ext4
     
