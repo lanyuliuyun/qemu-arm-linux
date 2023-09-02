@@ -11,11 +11,8 @@ download_packs() {
         tar zxf linux-4.9.37.tar.gz
     fi
 
-    if [ ! -f u-boot-2023.04.tar.gz ]; then
-        wget -c https://github.com/u-boot/u-boot/archive/refs/tags/v2023.04.tar.gz -O u-boot-2023.04.tar.gz
-    fi
     if [ ! -d u-boot-2023.04 ]; then
-        tar zxf u-boot-2023.04.tar.gz
+        git clone --depth 1 https://github.com/u-boot/u-boot.git -b v2023.04 u-boot-2023.04
     fi
 
     if [ ! -f busybox-1.25.1.tar.bz2 ]; then
@@ -49,12 +46,12 @@ build_linux() {
 build_uboot() {
     cd u-boot-2023.04
     #make qemu_arm64_defconfig
-    cp -vf ../run/ubooot.config  .config
+    cp -vf ../run/uboot.config  .config
     make olddefconfig
     make -j4 CROSS_COMPILE=${CROSS_COMPILE} > /dev/null
     # apt-get install ipxe-qemu
     cp -vf u-boot-nodtb.bin ../run/
-    #cp -vf .config ../run/ubooot.config
+    #cp -vf .config ../run/uboot.config
 
     cd -
 }
