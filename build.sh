@@ -5,7 +5,7 @@ export CROSS_COMPILE=/opt/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu/bin/
 
 download_packs() {
     if [ ! -f linux-4.9.37.tar.gz ]; then
-        wget -c https://mirrors.163.com/kernel/v4.x/linux-4.9.37.tar.gz
+        wget -c https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.9.37.tar.gz
     fi
     if [ ! -d linux-4.9.37 ]; then
         tar zxf linux-4.9.37.tar.gz
