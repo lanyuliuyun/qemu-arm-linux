@@ -28,6 +28,6 @@ boot_uboot() {
     # run bootcmd
 }
 
-#boot_initrd
+boot_initrd
 #boot_vda
-boot_uboot
+#boot_uboot

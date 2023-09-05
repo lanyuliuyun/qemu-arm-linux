@@ -4,10 +4,10 @@ export ARCH=arm64
 export CROSS_COMPILE=/opt/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
 
 download_packs() {
-    if [ ! -f linux-4.9.37.tar.gz ]; then
-        wget -c https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.9.37.tar.gz
-    fi
     if [ ! -d linux-4.9.37 ]; then
+        if [ ! -f linux-4.9.37.tar.gz ]; then
+            wget -c https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.9.37.tar.gz
+        fi
         tar zxf linux-4.9.37.tar.gz
     fi
 
@@ -15,10 +15,10 @@ download_packs() {
         git clone --depth 1 https://github.com/u-boot/u-boot.git -b v2023.04 u-boot-2023.04
     fi
 
-    if [ ! -f busybox-1.25.1.tar.bz2 ]; then
-        wget -c https://www.busybox.net/downloads/busybox-1.25.1.tar.bz2
-    fi
     if [ ! -d busybox-1.25.1 ]; then
+        if [ ! -f busybox-1.25.1.tar.bz2 ]; then
+            wget -c https://www.busybox.net/downloads/busybox-1.25.1.tar.bz2
+        fi
         tar jxf busybox-1.25.1.tar.bz2
     fi
 }
