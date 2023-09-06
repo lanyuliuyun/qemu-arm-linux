@@ -5,30 +5,22 @@ This repo provides shell scripts to build arm linux from scratch. We can use the
 ## prepare the needed tools
 ```bash
 wget -c https://releases.linaro.org/components/toolchain/binaries/7.5-2019.12/aarch64-linux-gnu/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu.tar.xz
+wget -c https://releases.linaro.org/components/toolchain/binaries/7.5-2019.12/arm-linux-gnueabihf/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz
 sudo tar -C /opt -Jxf gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu.tar.xz
+sudo tar -C /opt -Jxf gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz
 
-sudo apt-get install qemu-system-aarch64 ipxe-qemu flex bison -y
+sudo apt-get install qemu-system-arm ipxe-qemu flex bison -y
 ```
 
 ## Usage
 - download and build all arm linux components
 ```bash
-chmod +x r.sh build.sh
-
-./build.sh
+./build32.sh
+./build64.sh
 ```
 
-- start arm linux from initramdisk
+- start arm linux from initramdisk / vhd / uboot
 ```bash
-r.sh initrd
- ```
-
-- start arm linux from vhd
-```bash
-r.sh vhd
- ```
-
-- start arm linux from uboot
-```bash
-r.sh uboot
+./r32.sh { initrd | vhd | uboot }
+./r64.sh { initrd | vhd | uboot }
  ```

@@ -26,6 +26,7 @@ download_packs() {
 build_linux() {
   echo "build_linux ..."
   cd linux-4.9.37
+  make distclean
   #make defconfig
   cp -vf ../arm/run/linux.config .config
   make olddefconfig
@@ -46,6 +47,7 @@ build_linux() {
 
 build_uboot() {
     cd u-boot-2023.04
+    make distclean
     #make qemu_arm_defconfig
     cp -vf ../arm/run/uboot.config  .config
     make olddefconfig
@@ -59,6 +61,7 @@ build_uboot() {
 build_busybox() {
   echo "build_busybox..."
   cd busybox-1.25.1
+  make distclean
   cp -vf ../arm/run/busybox.config .config
   #make defconfig
   make CROSS_COMPILE=${CROSS_COMPILE} -j4 > /dev/null
@@ -91,7 +94,7 @@ make_boot_image() {
     cd arm/rootfs
     sudo cp -Pvr ./* /mnt/
     cd -
-    sudo cp -vf ./arm/run/Image /mnt
+    sudo cp -vf ./arm/run/zImage /mnt
     sudo umount /mnt
 }
 
