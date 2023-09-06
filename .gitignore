@@ -13,4 +13,7 @@ rootfs/usr/
 run/Image
 u-boot-2023.04/
 vfs/
+arm/
+arm64/
 *.img
+*.vscode/

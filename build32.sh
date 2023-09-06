@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export ARCH=arm64
-export CROSS_COMPILE=/opt/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
+export ARCH=arm
+export CROSS_COMPILE=/opt/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-
 
 download_packs() {
     if [ ! -d linux-4.9.37 ]; then
@@ -27,31 +27,31 @@ build_linux() {
   echo "build_linux ..."
   cd linux-4.9.37
   #make defconfig
-  cp -vf ../run/linux.config .config
+  cp -vf ../arm/run/linux.config .config
   make olddefconfig
-  make Image.gz modules -j4 > /dev/null
+  make zImage modules -j4 > /dev/null
   #make uImage LOADADDR=0x40080000
   #make dtbs 
 
-  cp -fv arch/arm64/boot/Image ../run/
-  cp -fv arch/arm64/boot/Image.gz ../run/
-  #cp -fv arch/arm64/boot/uImage ../run/
-  qemu-system-aarch64 -nographic -machine virt,dumpdtb=../run/virt.dtb -m 512M -cpu cortex-a53
-  make modules_install INSTALL_MOD_PATH=../vfs
-  #cp -fv .config ../run/linux.config
+  cp -fv arch/arm/boot/Image ../arm/run/
+  cp -fv arch/arm/boot/zImage ../arm/run/
+  cp -fv vmlinux ../arm/run/
+  #cp -fv arch/arm/boot/uImage ../arm/run/
+  qemu-system-arm -nographic -machine virt,dumpdtb=../arm/run/virt.dtb -m 512M -cpu cortex-a17
+  make modules_install INSTALL_MOD_PATH=../arm/vfs
+  #cp -fv .config ../arm/run/linux.config
 
   cd -
 }
 
 build_uboot() {
     cd u-boot-2023.04
-    #make qemu_arm64_defconfig
-    cp -vf ../run/uboot.config  .config
+    #make qemu_arm_defconfig
+    cp -vf ../arm/run/uboot.config  .config
     make olddefconfig
     make -j4 CROSS_COMPILE=${CROSS_COMPILE} > /dev/null
-    # apt-get install ipxe-qemu
-    cp -vf u-boot-nodtb.bin ../run/
-    #cp -vf .config ../run/uboot.config
+    cp -vf u-boot-nodtb.bin ../arm/run/
+    #cp -vf .config ../arm/run/uboot.config
 
     cd -
 }
@@ -59,37 +59,39 @@ build_uboot() {
 build_busybox() {
   echo "build_busybox..."
   cd busybox-1.25.1
-  cp -vf ../run/busybox.config .config
+  cp -vf ../arm/run/busybox.config .config
   #make defconfig
   make CROSS_COMPILE=${CROSS_COMPILE} -j4 > /dev/null
-  make install CONFIG_PREFIX=../rootfs
-  #cp -vf .config ../run/busybox.config
+  make install CONFIG_PREFIX=../arm/rootfs
+  #cp -vf .config ../arm/run/busybox.config
   
   cd -
 }
 
 init_rootfs() {
-    mkdir -p ./rootfs/{dev,sys,proc,lib,tmp,mnt,root,vfs}
+    mkdir -p ./arm64/{run,vfs,rootfs}
+    cp -Pvr rootfs/* ./arm64/rootfs/*
+    mkdir -p ./arm/rootfs/{dev,sys,proc,lib,tmp,mnt,root,vfs}
 }
 
 build_initrd() {
     echo "build init ramdisk"
-    cd rootfs
+    cd arm/rootfs
     find ./ | cpio -o -H newc | gzip > ../run/initrd.gz
 
     cd -
 }
 
 make_boot_image() {
-    dd if=/dev/zero of=run/flash.img bs=1MiB count=64
-    dd if=/dev/zero of=./run/vda.ext4 bs=1MiB count=128
-    mkfs.ext4 run/vda.ext4
+    dd if=/dev/zero of=arm/run/flash.img bs=1MiB count=64
+    dd if=/dev/zero of=./arm/run/vda.ext4 bs=1MiB count=128
+    mkfs.ext4 arm/run/vda.ext4
     
-    sudo mount -o loop run/vda.ext4 /mnt/
-    cd rootfs
+    sudo mount -o loop arm/run/vda.ext4 /mnt/
+    cd arm/rootfs
     sudo cp -Pvr ./* /mnt/
     cd -
-    sudo cp -vf ./run/Image /mnt
+    sudo cp -vf ./arm/run/Image /mnt
     sudo umount /mnt
 }
 

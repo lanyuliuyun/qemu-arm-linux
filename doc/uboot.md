@@ -1,6 +1,6 @@
-# uboot启动流程
+# uboot startup process
 
-基本的代码调用流程如下
+the basic code call flow is as follows
 ```
 arch/arm/cpu/armv8/start.S:_start
   apply_core_errata
