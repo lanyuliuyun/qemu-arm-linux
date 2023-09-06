@@ -3,7 +3,7 @@
 *.gz
 *.tar
 busybox-1.25.1.tar.bz2
-*.dtb
+*.dt*
 busybox-1.25.1/
 linux-4.9.37/
 rootfs/bin/
@@ -12,4 +12,5 @@ rootfs/sbin/
 rootfs/usr/
 run/Image
 u-boot-2023.04/
-vfs/lib/
+vfs/
+*.img

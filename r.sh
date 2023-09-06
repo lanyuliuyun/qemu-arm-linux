@@ -28,6 +28,19 @@ boot_uboot() {
     # run bootcmd
 }
 
-boot_initrd
-#boot_vda
-#boot_uboot
+if [ $# -lt 1 ]; then
+    echo "error: run mode needed"
+    echo 'Usage:' $0 '{ initrd | vhd | uboot }'
+    exit 0
+fi
+
+if [ $1 = 'initrd' ]; then
+    boot_initrd
+elif [ $1 = 'vhd' ]; then
+    boot_vda
+elif [ $1 = 'uboot' ]; then
+    boot_uboot
+else
+    echo "error: bad run mode"
+    echo 'Usage:' $0 '{ initrd | vhd | uboot }'
+fi
