@@ -23,7 +23,7 @@ boot_uboot() {
         -drive if=pflash,format=raw,index=1,file=arm/run/flash.img
 
     # setenv bootargs "root=/dev/vda rootfstype=ext4 rw init=/init"
-    # setenv bootcmd "load virtio 0:0 0x40080000 zImage;bootz 0x40080000 - 0x40000000"
+    # setenv bootcmd "load virtio 0:0 0x40080000 zImage;bootz 0x40080000 - 0x5edf0eb0"
     # saveenv
     # run bootcmd
 }

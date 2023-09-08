@@ -23,6 +23,12 @@ download_packs() {
     fi
 }
 
+init_rootfs() {
+    mkdir -p ./arm/vfs
+    cp -Pvr rootfs ./arm/
+    mkdir -p ./arm/rootfs/{dev,sys,proc,lib,tmp,mnt,root,vfs}
+}
+
 build_linux() {
   echo "build_linux ..."
   cd linux-4.9.37
@@ -34,7 +40,6 @@ build_linux() {
   #make uImage LOADADDR=0x40080000
   #make dtbs 
 
-  cp -fv arch/arm/boot/Image ../arm/run/
   cp -fv arch/arm/boot/zImage ../arm/run/
   cp -fv vmlinux ../arm/run/
   #cp -fv arch/arm/boot/uImage ../arm/run/
@@ -71,12 +76,6 @@ build_busybox() {
   cd -
 }
 
-init_rootfs() {
-    mkdir -p ./arm64/{run,vfs,rootfs}
-    cp -Pvr rootfs/* ./arm64/rootfs/*
-    mkdir -p ./arm/rootfs/{dev,sys,proc,lib,tmp,mnt,root,vfs}
-}
-
 build_initrd() {
     echo "build init ramdisk"
     cd arm/rootfs
@@ -99,9 +98,9 @@ make_boot_image() {
 }
 
 download_packs
+init_rootfs
 build_linux
 build_uboot
 build_busybox
-init_rootfs
 build_initrd
 make_boot_image

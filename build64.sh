@@ -23,6 +23,12 @@ download_packs() {
     fi
 }
 
+init_rootfs() {
+    mkdir -p ./arm64/vfs
+    cp -Pvr rootfs ./arm64/
+    mkdir -p ./arm64/rootfs/{dev,sys,proc,lib,tmp,mnt,root,vfs}
+}
+
 build_linux() {
   echo "build_linux ..."
   cd linux-4.9.37
@@ -68,12 +74,6 @@ build_busybox() {
   #cp -vf .config ../arm64/run/busybox.config
   
   cd -
-}
-
-init_rootfs() {
-    mkdir -p ./arm64/{run,vfs,rootfs}
-    cp -Pvr rootfs/* ./arm64/rootfs/*
-    mkdir -p ./arm64/rootfs/{dev,sys,proc,lib,tmp,mnt,root,vfs}
 }
 
 build_initrd() {
