@@ -38,7 +38,7 @@ build_linux() {
   cp -fv arch/arm/boot/zImage ../arm/run/
   cp -fv vmlinux ../arm/run/
   #cp -fv arch/arm/boot/uImage ../arm/run/
-  qemu-system-arm -nographic -machine virt,dumpdtb=../arm/run/virt.dtb -m 512M -cpu cortex-a17
+  qemu-system-arm -nographic -machine virt,dumpdtb=../arm/run/virt.dtb -m 512M -cpu cortex-a15
   make modules_install INSTALL_MOD_PATH=../arm/vfs
   #cp -fv .config ../arm/run/linux.config
 
@@ -87,9 +87,12 @@ build_initrd() {
 
 make_boot_image() {
     dd if=/dev/zero of=arm/run/flash.img bs=1MiB count=64
+
+    dd if=/dev/zero of=arm/run/flash-raw.img bs=1MiB count=64
+    dd if=arm/run/u-boot-nodtb.bin of=arm/run/flash-raw.img conv=notrunc
+
     dd if=/dev/zero of=./arm/run/vda.ext4 bs=1MiB count=128
     mkfs.ext4 arm/run/vda.ext4
-    
     sudo mount -o loop arm/run/vda.ext4 /mnt/
     cd arm/rootfs
     sudo cp -Pvr ./* /mnt/

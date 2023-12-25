@@ -29,3 +29,16 @@ arch/arm/cpu/armv8/start.S:_start
         ..
         common/board_r.c:run_main_loop
 ```
+
+block-size 0x20000, 128K
+
+# partition plan
+name         size         offset        addr
+loader       0x0E0000     0x0           0x4000000      822332
+env          0x020000     0x0E0000      0x40E0000      65536
+fdt          0x020000     0x100000      0x4100000      65536
+kernel       0x520000     0x120000      0x4120000      5138944
+rootfs       -            0x620000      0x4620000
+
+bootargs中的分区参数
+mtdparts=nor0:896k(loader),128k(env),128k(fdt),5248k(kernel),-(rootfs)
