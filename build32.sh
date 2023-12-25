@@ -89,6 +89,7 @@ make_boot_image() {
 
     dd if=/dev/zero of=arm/run/flash-raw.img bs=1MiB count=64
     dd if=arm/run/u-boot-nodtb.bin of=arm/run/flash-raw.img conv=notrunc
+    dd if=arm/run/zImage of=arm/run/flash-raw.img bs=1KiB seek=1152 conv=notrunc
 
     dd if=/dev/zero of=./arm/run/vda.ext4 bs=1MiB count=128
     mkfs.ext4 arm/run/vda.ext4

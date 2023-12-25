@@ -35,7 +35,7 @@ boot_raw() {
         -device virtio-blk-device,drive=vda -drive file=arm/run/vda.ext4,if=none,id=vda,format=raw
 
     # setenv bootargs "root=/dev/vda rootfstype=ext4 rw init=/init"
-    # setenv bootcmd "load virtio 0:0 0x40080000 zImage;bootz 0x40080000 - 0x40000000"
+    # setenv bootcmd "mtd read nor0 0x40080000 0x120000 0x4E6A08;bootz 0x40080000 - 0x40000000"
     # saveenv
     # run bootcmd
 }
